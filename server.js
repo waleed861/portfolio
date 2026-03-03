@@ -34,7 +34,18 @@ const server = http.createServer((req, res) => {
         }
         const ext = path.extname(filePath).toLowerCase();
         const contentType = mime[ext] || 'application/octet-stream';
-        res.writeHead(200, { 'Content-Type': contentType });
+
+        // Cache static assets for 1 year, others (like HTML) for shorter or revalidate
+        let cacheControl = 'no-cache';
+        if (['.css', '.js', '.woff', '.woff2', '.png', '.jpg', '.jpeg', '.svg', '.ico'].includes(ext)) {
+            cacheControl = 'public, max-age=31536000, immutable';
+        }
+
+        res.writeHead(200, {
+            'Content-Type': contentType,
+            'Cache-Control': cacheControl,
+            'X-Content-Type-Options': 'nosniff'
+        });
         res.end(data);
     });
 });
