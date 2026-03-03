@@ -52,22 +52,19 @@ const navLinkEls = document.querySelectorAll('.nav-link');
 window.addEventListener('scroll', () => {
   navbar.classList.toggle('scrolled', window.scrollY > 30);
   updateActiveLink();
-}, { passive: true });
+});
 
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('open');
   navLinks.classList.toggle('open');
 });
 
-if (navLinks) {
-  navLinks.addEventListener('click', e => {
-    const link = e.target.closest('.nav-link');
-    if (link) {
-      hamburger.classList.remove('open');
-      navLinks.classList.remove('open');
-    }
+navLinkEls.forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
   });
-}
+});
 
 function updateActiveLink() {
   const sections = document.querySelectorAll('section[id]');
@@ -100,8 +97,7 @@ themeToggle.addEventListener('click', () => {
   const theme = isDark ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('portfolioTheme', theme);
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+  themeIcon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
 });
 
 /* ────────────────────────────────────────────────────────────
@@ -363,7 +359,7 @@ const backToTop = document.getElementById('backToTop');
 
 window.addEventListener('scroll', () => {
   backToTop.classList.toggle('visible', window.scrollY > 400);
-}, { passive: true });
+});
 
 backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });

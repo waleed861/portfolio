@@ -670,8 +670,6 @@ body:hover .cursor {
 .section {
   padding: 100px 0;
   position: relative;
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 1000px;
 }
 
 .section:nth-child(even) {
@@ -747,7 +745,6 @@ body:hover .cursor {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  will-change: transform;
 }
 
 .avatar-initials {
