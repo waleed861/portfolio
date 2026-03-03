@@ -1,0 +1,17 @@
+{
+  "name": "waleed-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website for Waleed Ur Rehman – Frontend Developer & UI Developer",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "portfolio",
+    "frontend",
+    "react",
+    "nextjs"
+  ],
+  "author": "Waleed Ur Rehman",
+  "license": "ISC"
+}
