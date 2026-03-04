@@ -261,9 +261,9 @@ body:hover .cursor {
   background-clip: text;
 }
 
-.logo-bracket {
+/* .logo-bracket {
   opacity: 0.7;
-}
+} */
 
 .nav-links {
   display: flex;
