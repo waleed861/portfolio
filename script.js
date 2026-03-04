@@ -421,6 +421,215 @@ setTimeout(() => {
 }, 300);
 
 /* ────────────────────────────────────────────────────────────
+    RESUME DOWNLOAD (PDF Generation)
+───────────────────────────────────────────────────────────── */
+function generateResume() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+
+  // Design Tokens (Modern & Classy)
+  const primaryColor = [108, 99, 255]; // #6c63ff
+  const darkColor = [20, 20, 40];      // Professional Dark
+  const grayColor = [100, 100, 110];   // Subdued text
+  const lightGray = [240, 240, 250];   // Divider/Bg
+
+  // Decide layout based on current viewport width
+  const isMobileLayout = window.innerWidth <= 768;
+
+  const margin = isMobileLayout ? 15 : 20;
+  const pageWidth = 210;
+  const contentWidth = pageWidth - (margin * 2);
+  let currY = 20;
+
+  // --- Header ---
+  const headerHeight = isMobileLayout ? 48 : 55;
+  doc.setFillColor(...darkColor);
+  doc.rect(0, 0, pageWidth, headerHeight, 'F');
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('Helvetica', 'bold');
+  doc.setFontSize(isMobileLayout ? 24 : 28);
+  doc.text('WALEED UR REHMAN', margin, 24);
+
+  doc.setTextColor(...primaryColor);
+  doc.setFontSize(isMobileLayout ? 11 : 12);
+  doc.setFont('Helvetica', 'normal');
+  doc.text('FRONTEND DEVELOPER & UI DESIGNER', margin, isMobileLayout ? 31 : 33);
+
+  // Contact Info Line
+  doc.setTextColor(220, 220, 230);
+  doc.setFontSize(isMobileLayout ? 8 : 8.5);
+  const contactText = 'waleedurrehman861@gmail.com   |   +92 335 310 1111   |   waleurrehman.me';
+  doc.text(contactText, margin, isMobileLayout ? 38 : 42);
+  if (!isMobileLayout) {
+    doc.text('Peshawar, Pakistan', margin, 47);
+  }
+
+  currY = headerHeight + 15;
+
+  // --- Sections Helper ---
+  const addSectionTitle = (title) => {
+    currY += 4;
+    doc.setTextColor(...darkColor);
+    doc.setFont('Helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.text(title.toUpperCase(), margin, currY);
+    currY += 1.5;
+    doc.setDrawColor(...primaryColor);
+    doc.setLineWidth(0.6);
+    doc.line(margin, currY, margin + 12, currY);
+    currY += 8;
+  };
+
+  // --- Profile Summary ---
+  addSectionTitle('About Me');
+  doc.setTextColor(...darkColor);
+  doc.setFont('Helvetica', 'normal');
+  doc.setFontSize(9.5);
+  const summary = "Proactive Frontend Developer specializing in Next.js and React. With a background in graphic design (Certified 2021), I build high-performance, responsive, and visually stunning digital products that excel on both technical and aesthetic fronts.";
+  const summaryLines = doc.splitTextToSize(summary, contentWidth);
+  doc.text(summaryLines, margin, currY);
+  currY += (summaryLines.length * 5) + 8;
+
+  // --- Experience ---
+  addSectionTitle('Experience');
+
+  const experiences = [
+    {
+      role: 'Frontend Developer',
+      company: 'Designex Studio',
+      period: '2024 - Present',
+      points: [
+        'Architecting web apps with Next.js 14, React & Strapi CMS.',
+        'Converting Figma prototypes into pixel-perfect interactive UIs.',
+        'Optimizing performance, resulting in 30% speed increase.'
+      ]
+    },
+    {
+      role: 'UI/UX Designer & Developer',
+      company: 'Freelance',
+      period: '2023',
+      points: [
+        'Delivered 10+ high-end designs and implementations for global clients.',
+        'Developed custom design systems & component libraries in Figma.',
+        'Integrated REST APIs and handled dynamic state management.'
+      ]
+    }
+  ];
+
+  experiences.forEach(exp => {
+    doc.setTextColor(...darkColor);
+    doc.setFont('Helvetica', 'bold');
+    doc.setFontSize(10.5);
+    doc.text(exp.role, margin, currY);
+
+    doc.setFont('Helvetica', 'normal');
+    const periodWidth = doc.getTextWidth(exp.period);
+    doc.setTextColor(...grayColor);
+    doc.text(exp.period, pageWidth - margin - periodWidth, currY);
+
+    currY += 4;
+    doc.setTextColor(...primaryColor);
+    doc.setFont('Helvetica', 'bold');
+    doc.text(exp.company, margin, currY);
+
+    currY += 5;
+    doc.setTextColor(...darkColor);
+    doc.setFont('Helvetica', 'normal');
+    doc.setFontSize(9);
+    exp.points.forEach(p => {
+      doc.text('•', margin + 2, currY);
+      const wrappedPoint = doc.splitTextToSize(p, contentWidth - 8);
+      doc.text(wrappedPoint, margin + 5, currY);
+      currY += (wrappedPoint.length * 4.5);
+    });
+    currY += 4;
+  });
+
+  // --- Portfolio Projects ---
+  addSectionTitle('Key Projects');
+
+  const featuredProjects = [
+    {
+      name: 'E-Commerce Ecosystem',
+      tech: 'Next.js, Strapi, REST API',
+      desc: 'Full-scale storefront with real-time cart and inventory dashboard.'
+    },
+    {
+      name: 'Real-time Chat Engine',
+      tech: 'React, Socket.io, Node.js',
+      desc: 'Instant messaging with virtual rooms and WebSockets persistence.'
+    }
+  ];
+
+  featuredProjects.forEach(proj => {
+    doc.setTextColor(...darkColor);
+    doc.setFont('Helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text(proj.name, margin, currY);
+
+    currY += 4;
+    doc.setTextColor(...primaryColor);
+    doc.setFont('Helvetica', 'italic');
+    doc.setFontSize(8.5);
+    doc.text('Stack: ' + proj.tech, margin, currY);
+
+    currY += 4;
+    doc.setTextColor(...darkColor);
+    doc.setFont('Helvetica', 'normal');
+    doc.setFontSize(9);
+    const projDesc = doc.splitTextToSize(proj.desc, contentWidth);
+    doc.text(projDesc, margin, currY);
+    currY += (projDesc.length * 4.5) + 5;
+  });
+
+  // --- Skills ---
+  addSectionTitle('Technical Expertise');
+  doc.setFontSize(9);
+
+  const skillsData = [
+    { cat: 'Development:', val: 'Next.js 14, React, JS (ES6+), Vue.js' },
+    { cat: 'Design/Tools:', val: 'Figma, Tailwind CMS, Strapi, Git, REST APIs' }
+  ];
+
+  skillsData.forEach(s => {
+    doc.setFont('Helvetica', 'bold');
+    doc.text(s.cat, margin, currY);
+    doc.setFont('Helvetica', 'normal');
+    doc.text(s.val, margin + 28, currY);
+    currY += 5;
+  });
+
+  // --- Footer CTA ---
+  currY += 10;
+  doc.setFillColor(...lightGray);
+  doc.rect(margin, currY, contentWidth, 18, 'F');
+
+  currY += 7;
+  doc.setTextColor(...primaryColor);
+  doc.setFont('Helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('LET\'S WORK TOGETHER!', margin + 5, currY);
+
+  currY += 5;
+  doc.setTextColor(...darkColor);
+  doc.setFont('Helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.text('Available for new opportunities. Visit waleurrehman.me for more info.', margin + 5, currY);
+
+  // --- Save ---
+  const fileName = isMobileLayout ? 'Waleed_Resume_Mobile.pdf' : 'Waleed_Resume_Desktop.pdf';
+  doc.save(fileName);
+}
+
+// Attach listener (with check since it's dynamic)
+document.addEventListener('click', e => {
+  if (e.target.closest('#downloadResume')) {
+    generateResume();
+  }
+});
+
+/* ────────────────────────────────────────────────────────────
    PAGE LOADED
 ───────────────────────────────────────────────────────────── */
 window.addEventListener('load', () => {

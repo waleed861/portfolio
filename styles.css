@@ -318,6 +318,34 @@ body:hover .cursor {
   font-size: 0.875rem;
 }
 
+.resume-btn {
+  padding: 10px 16px;
+  gap: 8px;
+  display: inline-flex;
+  /* Ensure it stays visible */
+}
+
+@media (max-width: 1024px) {
+  .resume-btn .btn-text {
+    display: none;
+  }
+
+  .resume-btn {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-cta.resume-btn {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .nav-actions {
+    gap: 8px;
+  }
+}
+
 .hamburger {
   display: none;
   flex-direction: column;
@@ -2862,6 +2890,24 @@ body:hover .cursor {
 
   .nav-cta {
     display: none;
+  }
+
+  .nav-cta.resume-btn {
+    display: inline-flex;
+    /* Override to show on mobile */
+    padding: 8px 12px;
+    font-size: 1rem;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+
+  .nav-cta.resume-btn i {
+    margin: 0;
   }
 
   .section {
